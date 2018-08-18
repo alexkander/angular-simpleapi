@@ -1,5 +1,6 @@
 {
   "name": "angular-simpleapi",
+  "version": "0.0.2",
   "homepage": "https://github.com/arondn2/angular-simpleapi",
   "authors": [
     "Alex J. Rondón <arondn2@gmail.com>"

@@ -1,6 +1,6 @@
 {
   "name": "angular-simpleapi",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Angular JS module to implement quickly apis",
   "main": "src/index.js",
   "scripts": {
