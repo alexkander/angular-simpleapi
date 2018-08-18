@@ -79,7 +79,7 @@ export default function SimpleApiModel() { 'ngInject';
             }
             value.$resolved = true;
             if ((debug || self.debug) && self.$logger) {
-              // self.$logger(`${self.name}.${args.name}`, params, value);
+              self.$logger(`${self.name}.${args.name}`, params, value);
             }
             return value;
           })
