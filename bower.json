@@ -1,0 +1,33 @@
+{
+  "name": "angular-simpleapi",
+  "homepage": "https://github.com/arondn2/angular-simpleapi",
+  "authors": [
+    "Alex J. Rondón <arondn2@gmail.com>"
+  ],
+  "description": "Angular JS module to implement quickly apis",
+  "main": "angular-simpleapi.js",
+  "keywords": [
+    "angular",
+    "loopback",
+    "resources",
+    "api"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/arondn/angular-simpleapi.git"
+  },
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "bower_components",
+    "gh-pages",
+    "src",
+    "node_modules",
+    ".bowerrc",
+    ".gitignore",
+    "gulpfile.js"
+  ],
+  "dependencies": {
+    "angular": "^1.5.8"
+  }
+}
