@@ -37,6 +37,9 @@ Released under [the MIT license](https://github.com/arondn2/angular-simpleapi/bl
 
 ## Changelog
 
+### V0.0.2
+* Debug Option
+
 ### V0.0.1
 * First release
 * Providers `SimpleApiEventEmitter`, `SimpleApiModel` and `SimpleApiRoot`
