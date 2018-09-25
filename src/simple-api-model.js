@@ -63,9 +63,13 @@ export default function SimpleApiModel() { 'ngInject';
           }
 
           if (req.method === 'GET') {
-            req.params = params;
+            if (!req.params) {
+              req.params = params;
+            }
           } else {
-            req.data = params;
+            if (!req.data) {
+              req.data = params;
+            }
           }
 
           value.$resolved = false;
