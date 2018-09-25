@@ -37,6 +37,9 @@ Released under [the MIT license](https://github.com/arondn2/angular-simpleapi/bl
 
 ## Changelog
 
+### V0.0.4
+* If req.data is passed, don't set req.data with params object
+
 ### V0.0.2
 * Debug Option
 
