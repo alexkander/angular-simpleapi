@@ -2,7 +2,7 @@
 
 export default function SimpleApiModel() { 'ngInject';
 
-  this.$get = function ($http) { 'ngInject';
+  this.$get = function ($http, $q) { 'ngInject';
 
     class SimpleApiModel {
 
@@ -48,13 +48,16 @@ export default function SimpleApiModel() { 'ngInject';
           
           const isArray = args.isArray;
           const value  = isArray?[]:{};
+
+          let waiting = $q.resolve();
           
           req.method = args.method;
           req.url = self.buildUrl(args.url, params);
           req.headers = req.headers || {};
 
           if (self.rootApi.interceptor) {
-            self.rootApi.interceptor(req);
+            waiting = $q.resolve()
+            .then(() => self.rootApi.interceptor(req));
           }
 
           if (self.rootApi.accessTokenId) {
@@ -74,7 +77,14 @@ export default function SimpleApiModel() { 'ngInject';
 
           value.$resolved = false;
 
-          value.$promise = $http(req)
+          value.$promise = $q.resolve(waiting)
+          .then(() => {
+            let $promise = $http(req);
+            if (self.rootApi.postProcessed) {
+              return self.rootApi.postProcessed($promise);
+            }
+            return $promise;
+          })
           .then((response) => {
             if (isArray) {
               value.push.apply(value, response.data);
