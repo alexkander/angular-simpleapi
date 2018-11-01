@@ -51,39 +51,41 @@ export default function SimpleApiModel() { 'ngInject';
 
           let waiting = $q.resolve();
           
-          req.method = args.method;
-          req.url = self.buildUrl(args.url, params);
-          req.headers = req.headers || {};
+          const getReq = (req) => {
+            req.method = args.method;
+            req.url = self.buildUrl(args.url, params);
+            req.headers = req.headers || {};
 
-          if (self.rootApi.interceptor) {
-            waiting = $q.resolve()
-            .then(() => self.rootApi.interceptor(req));
-          }
-
-          if (self.rootApi.accessTokenId) {
-            if(!req.headers[self.rootApi.authHeader])
-              req.headers[self.rootApi.authHeader] = self.rootApi.accessTokenId;
-          }
-
-          if (req.method === 'GET') {
-            if (!req.params) {
-              req.params = params;
+            if (self.rootApi.interceptor) {
+              waiting = $q.resolve()
+              .then(() => self.rootApi.interceptor(req));
             }
-          } else {
-            if (!req.data) {
-              req.data = params;
+
+            if (self.rootApi.accessTokenId) {
+              if(!req.headers[self.rootApi.authHeader])
+                req.headers[self.rootApi.authHeader] = self.rootApi.accessTokenId;
             }
-          }
+
+            if (req.method === 'GET') {
+              if (!req.params) {
+                req.params = params;
+              }
+            } else {
+              if (!req.data) {
+                req.data = params;
+              }
+            }
+          };
 
           value.$resolved = false;
 
           value.$promise = $q.resolve(waiting)
           .then(() => {
-            let $promise = $http(req);
+            const $promise = () => $http(getReq(Object.assign({}, req)));
             if (self.rootApi.postProcessed) {
-              return self.rootApi.postProcessed($promise);
+              return self.rootApi.postProcessed($promise(), $promise);
             }
-            return $promise;
+            return $promise();
           })
           .then((response) => {
             if (isArray) {
