@@ -75,6 +75,7 @@ export default function SimpleApiModel() { 'ngInject';
                 req.data = params;
               }
             }
+            return req;
           };
 
           value.$resolved = false;
