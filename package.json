@@ -32,5 +32,9 @@
     "ng-annotate-loader": "^0.7.0",
     "webpack": "^4.44.1",
     "webpack-stream": "^5.2.1"
+  },
+  "resolutions": {
+    "minimist": "^1.2.3",
+    "lodash.template": ">=4.5.0"
   }
 }
