@@ -1,11 +1,8 @@
 'use strict';
 
-const path = require('path');
-
 const gulp = require('gulp');
 const gutil = require('gulp-util');
-const guglify = require('gulp-uglifyjs');
-const webpack = require('gulp-webpack');
+const webpack = require('webpack-stream');
 
 const pkg = require('./package.json');
 const bower = require('./bower.json');
@@ -17,15 +14,15 @@ function errorHandler(title) {
   };
 }
 
-function webpackWrapper(callback) {
+function webpackWrapper(mode, filename, callback) {
   const webpackOptions = {
     watch: !!callback,
+    mode: mode,
     devtool: 'inline-source-map',
     module: {
-      // preLoaders: [{ test: /\.js$/, exclude: /node_modules/, loader: 'eslint-loader'}],
-      loaders: [{ test: /\.js$/, exclude: /node_modules/, loaders: ['ng-annotate', 'babel-loader?presets[]=es2015']}]
+      rules: [{ test: /\.js$/, exclude: /node_modules/, loaders: ['ng-annotate-loader', 'babel-loader?presets[]=es2015']}]
     },
-    output: { filename: bower.name.concat('.js') }
+    output: { filename: filename }
   };
 
   const webpackChangeHandler = function(err, stats) {
@@ -46,18 +43,22 @@ function webpackWrapper(callback) {
 
   return gulp.src([ pkg.main ])
     .pipe(webpack(webpackOptions, null, webpackChangeHandler))
-    .pipe(gulp.dest(''))
-    .pipe(guglify(bower.name.concat('.min.js')))
-    .pipe(gulp.dest(''));
+    .pipe(gulp.dest('./'))
+    // .pipe(guglify(bower.name.concat('.min.js')))
+    // .pipe(gulp.dest('./'));
     
 }
 
 gulp.task('build', function () {
-  return webpackWrapper();
+  return webpackWrapper('development', bower.name.concat('.js'));
+});
+
+gulp.task('build:min', function () {
+  return webpackWrapper('production', bower.name.concat('.min.js'));
 });
 
 gulp.task('watch', function (callback) {
-  return webpackWrapper(callback);
+  return webpackWrapper('development', bower.name.concat('.js'), callback);
 });
 
-gulp.task('default', ['build']);
+gulp.task('default', gulp.series('build', 'build:min'));
